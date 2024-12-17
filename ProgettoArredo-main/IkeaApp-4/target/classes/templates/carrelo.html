@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Carrello</title>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Raleway:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+        });
+    </script>
+    <style>
+        /* Impostazioni generali del body */
+        body {
+            background-image: url('arredo.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+ 
+        /* Centrare il logo del carrello */
+        .logo-carrello {
+            display: block;
+            margin: 40px auto; /* Spaziatura superiore e inferiore */
+            width: 80%;
+            max-width: 400px; /* Limite massimo per la larghezza */
+            height: auto;
+        }
+ 
+        /* Centrare il logo dello store */
+        .logo-store {
+            display: block;
+            margin: 20px auto; /* Centra orizzontalmente */
+            width: 80%;
+            max-width: 400px; /* Limite massimo per la larghezza */
+            height: auto;
+        }
+ 
+        /* Stile per i titoli */
+        h1, h3 {
+            font-family: 'Raleway', sans-serif;
+            text-align: center;
+            color: #005b96;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            letter-spacing: 1px;
+        }
+ 
+        /* Stile per le tabelle */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+ 
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+ 
+        .card {
+            margin: 15px auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+ 
+        .btn {
+            border-radius: 30px;
+        }
+ 
+        /* Stile personalizzato per i bottoni */
+        .btn-green {
+            background-color: #42a5f5;
+        }
+ 
+        .btn-red {
+            background-color: #E57373 !important;
+        }
+ 
+        .btn-blue {
+            background-color: #42a5f5;
+        }
+ 
+        .btn:hover {
+            background-color: #0288d1;
+        }
+ 
+        /* Impostazioni footer */
+        footer {
+            background-color: #005b96;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+	        position: relative;
+   		    z-index: 10;
+    		box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.2); /* Sombra opcional */
+
+            
+        }
+ 
+.card-image .custom {
+    width: 100%;          /* Ocupa todo el ancho disponible dentro de la tarjeta */
+    height: 200px;        /* Altura fija para todas las imágenes */
+    object-fit: cover;    /* Recorta las imágenes para que encajen sin deformarse */
+    border-radius: 5px;   /* Opcional: esquinas redondeadas para estética */
+}
+
+/* Ajustes opcionales para mantener consistencia visual */
+.card {
+    height: auto;         /* Permite que las tarjetas se ajusten al contenido */
+}
+        /* Impostazioni dei font per le etichette */
+        .input-field input:focus {
+            border-bottom: 1px solid #42a5f5;
+            box-shadow: 0 1px 0 0 #42a5f5;
+        }
+    </style>
+</head>
+<body>
+  <hr>
+                <table class="striped centered">
+                    <thead>
+                        <tr>
+                            <th>Nome Prodotto</th>
+                            <th>Marca</th>
+                            <th>Prezzo</th>
+                            <th>Immagine</th>
+                            <th>Pezzi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="prodotto : ${carrello}">
+                            <td th:text="${prodotto.nome}"></td>
+                            <td th:text="${prodotto.marca}"></td>
+                            <td>€<span th:text="${prodotto.prezzo}"></span></td>
+                            <td><img class="custom" th:src="${prodotto.url}" /></td>
+                            <td th:text="${prodotto.pezzi}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col s12">
+                        <h4>Scrivi la tua mail</h4>
+                        <form action="/buy" method="post">
+                            <div class="input-field">
+                                <input type="email" id="mail" name="mail" required>
+                                <label for="mail">Email</label>
+                            </div>
+                            <div class="input-field">
+                                <select id="testToken" name="token" required>
+                                    <option value="" disabled selected>Seleziona una carta</option>
+                                    <option value="tok_visa">Visa Test Card</option>
+                                    <option value="tok_mastercard">MasterCard Test Card</option>
+                                    <option value="tok_amex">American Express Test Card</option>
+                                </select>
+                                <label for="testToken">Test Token</label>
+                            </div>
+                            <button type="submit" class="btn waves-effect waves-light btn-blue">Compra</button>
+                        </form>
+                        <form action="/clear" method="post" style="margin-top: 15px;">
+                            <button type="submit" class="btn red lighten-2 waves-effect waves-light btn-red">Svuota Carrello</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+</html>

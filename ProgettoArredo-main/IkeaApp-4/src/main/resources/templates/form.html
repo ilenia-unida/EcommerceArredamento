@@ -1,0 +1,360 @@
+<!--<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+ <script>
+    window.onload = gestoreLoad;
+    
+    function gestoreLoad(){
+    	
+    	
+    	google.charts.load('current', {'packages':['corechart']});
+    	let data = []
+    	
+        google.charts.setOnLoadCallback(getCharts);
+    	
+    	
+    	
+
+        
+    	async function getCharts() {
+    		
+    		
+    	    try {
+    	        // Effettua una richiesta fetch e attende la risposta
+    	        const response = await fetch('/lista');
+
+    	        // Verifica se la risposta è andata a buon fine
+    	        if (!response.ok) {
+    	            throw new Error('Network response was not ok');
+    	        }
+
+    	        // Converte la risposta in formato JSON e la attende
+    	         data = await response.json();
+    	        
+    	        //stampare il primo oggetto della lista
+    	        console.log(data[1]['marca']);
+    	        
+    	        
+    	        
+    	        
+    	        
+    	         let DataArray = []
+    	    		DataArray.push(["nome", "venduti"])
+    		        
+    		        for (let i = 0; i < data.length; i++) {
+    		        	
+    		        	DataArray.push([data[i].nome, data[i].pezziV])
+    		        }
+    		      
+    		          var options = {
+    		            title: 'Dati di vendita'
+    		          };
+                       console.log(DataArray)
+    		       // Converte l'array DataArray in un oggetto DataTable
+    		          var dataTable = google.visualization.arrayToDataTable(DataArray);
+    		          
+    		          var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    	    		  var barre = new google.visualization.BarChart(document.getElementById('chart_div'));
+
+    		          chart.draw(dataTable, options);
+    		          barre.draw(dataTable, options);
+    		          
+    		       /*   var options = {
+    		                  title: 'Istogramma',
+    		                  legend: { position: 'none' },
+    		                };
+
+    		                var chart1 = new google.visualization.Histogram(document.getElementById('chart_div'));
+    		                chart1.draw(dataTable, options);*/
+    	        
+    	        
+
+    	        // Utilizza i dati ottenuti
+    	        console.log(data);
+    	    } catch (error) {
+    	        // Gestisce eventuali errori
+    	        console.error('There was a problem:', error);
+    	    }
+    	}
+    	
+    	
+
+    	
+    	
+    	   
+    }
+    
+    
+    
+    
+    
+    
+    </script>
+</head>
+<body>
+<h3>Inserisci gioco</h3>
+<form action = "/submit" method = "POST">
+Inserisci il nome del gioco: <br>
+<input type = "text" name = "nome"><br>
+Inserisci la marca del gioco: <br>
+<input type = "text" name = "marca"><br>
+Inserisci il prezzo del gioco: <br>
+<input type = "number" name = "prezzo"><br>
+Inserisci la url del gioco: <br>
+<input type = "text" name = "url"><br>
+<input type = "submit" value = "Invia">
+
+
+</form>
+<h3>Aggiorna prezzo del gioco</h3>
+<form action = "/update"  method = "POST">
+Inserisci il nome del gioco: <br>
+<input type = "text" name = "nome"><br>
+Inserisci il prezzo del gioco: <br>
+<input type = "number" name = "prezzo"><br>
+<input type = "submit" value = "Invia">
+</form>
+
+<h3>Cancella gioco</h3>
+<form action = "/delete" method = "POST">
+
+<select name = "nome">
+<option th:each="gioco : ${lista}" th:value = "${gioco.nome}" th:text = "${gioco.nome}">
+
+</select>
+
+<input type = "submit" value = "Invia">
+
+
+</form>
+
+ <h3>Grafici vendite</h3>
+         <div id="piechart" style="width: 900px; height: 500px;"></div>
+         <hr>
+         
+<div id="chart_div" style="width: 900px; height: 500px;"></div>
+
+
+
+</body>
+</html>
+
+------------------------------------------------------------------------------------------------------------
+-->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema per la gestione di articoli in un negozio">
+    <title>Gestione Negozio</title>
+ 
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        window.onload = gestoreLoad;
+ 
+        function gestoreLoad() {
+        	   google.charts.load('current', {'packages': ['corechart', 'bar']});
+               google.charts.setOnLoadCallback(getCharts);
+ 
+            async function getCharts() {
+                try {
+                    const response = await fetch('/lista');
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    let data = await response.json();
+                    let DataArray = [];
+                    DataArray.push(["nome", "venduti"]);
+ 
+                    for (let i = 0; i < data.length; i++) {
+                        DataArray.push([data[i].nome, data[i].pezziV]);
+                    }
+ 
+                    var pieOptions = {
+                            title: 'Dati di vendita (Torta)',
+                        };
+ 
+                    var pieDataTable = google.visualization.arrayToDataTable(DataArray);
+                    var pieChart = new google.visualization.PieChart(document.getElementById('piechart'));
+                    pieChart.draw(pieDataTable, pieOptions);
+ 
+ 
+                    var barOptions = {
+                            title: 'Dati di vendita (Istogramma)',
+                            chartArea: {width: '50%'},
+                            hAxis: {
+                                title: 'Vendite',
+                                minValue: 0
+                            },
+                            vAxis: {
+                                title: 'Articolo'
+                            }
+                        };
+ 
+                    var barDataTable = google.visualization.arrayToDataTable(DataArray);
+                    var barChart = new google.visualization.BarChart(document.getElementById('barchart'));
+                    barChart.draw(barDataTable, barOptions);
+ 
+                } catch (error) {
+                    console.error('There was a problem:', error);
+                }
+            }
+        }
+    </script>
+ 
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+ 
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+ 
+        h3 {
+            color: #333;
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+ 
+        .section {
+            margin-bottom: 30px;
+        }
+ 
+        label {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: block;
+            color: #555;
+        }
+ 
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+ 
+        input[type="submit"] {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+ 
+        input[type="submit"]:hover {
+            background-color: #4cae4c;
+        }
+ 
+        select {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+ 
+        .section hr {
+            border-top: 1px solid #eee;
+            margin-top: 40px;
+        }
+ 
+        .section .piechart {
+            text-align: center;
+        }
+ 
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+ 
+        .form-container .section {
+            width: 48%;
+            margin-bottom: 30px;
+        }
+ 
+        @media (max-width: 768px) {
+            .form-container .section {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <a href="/private/inventory">Stock</a>
+        <div class="section">
+           <h3>Inserisci articolo</h3>
+<form action = "/submit" method = "POST">
+Inserisci il nome  articolo: <br>
+<input type = "text" name = "nome"><br>
+Inserisci la marca  articolo: <br>
+<input type = "text" name = "marca"><br>
+Inserisci il prezzo articolo: <br>
+<input type="number" id="prezzo-update" name="prezzo" step="0.01" required><br>
+Inserisci la url articolo: <br>
+<input type = "text" name = "url"><br>
+<input type = "submit" value = "Invia">
+
+
+</form>
+<h3>Aggiorna prezzo articolo</h3>
+<form action = "/update"  method = "POST" step= "0.01"  >
+Inserisci il nome articolo: <br>
+<input type = "text" name = "nome"><br>
+Inserisci il prezzo articolo: <br>
+<input type = "number" name = "prezzo"  step= "0.01" ><br>
+<input type = "submit" value = "Invia">
+</form>
+
+<h3>Cancella Articolo</h3>
+<form action = "/delete" method = "POST">
+
+<select name = "nome">
+<option th:each="gioco : ${lista}" th:value = "${gioco.nome}" th:text = "${gioco.nome}">
+
+</select>
+
+<input type = "submit" value = "Invia">
+
+
+</form>
+
+ 
+            <h3>Grafici vendite</h3>
+            <div id="piechart" style="width: 100%; height: 500px;"></div>
+            <hr>
+            <div id="barchart" style="width: 100%; height: 500px;"></div>
+        </div>
+        <hr>
+         
+         
+</body>
+</html>
+
+
+
+ 
+ 
+ 
+ 

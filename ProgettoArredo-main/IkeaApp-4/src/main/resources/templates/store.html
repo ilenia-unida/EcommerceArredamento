@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrello e Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Raleway:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+        });
+    </script>
+   
+    <style>
+       body {
+            background-image: url('https://i.postimg.cc/KzWr3VCs/fondo-de-una-web-de-ventas-de-muebles-para-la-casa.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h3 {
+            font-family: 'Raleway', sans-serif;
+            text-align: center;
+            color: #005b96;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            letter-spacing: 1px;
+        }
+
+        .card {
+            margin: 15px auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            border-radius: 30px;
+        }
+
+        .btn-green {
+            background-color: #42a5f5;
+        }
+
+        .btn-red {
+            background-color: #E57373 !important;
+        }
+
+        .btn-blue {
+            background-color: #42a5f5;
+        }
+
+        .btn:hover {
+            background-color: #0288d1;
+        }
+
+        footer {
+            background-color: #005b96;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .card-image .custom {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .logo {
+            display: block;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 400px;
+            height: auto;
+        }
+
+        .input-field input:focus {
+            border-bottom: 1px solid #42a5f5;
+            box-shadow: 0 1px 0 0 #42a5f5;
+        }
+    </style>
+</head>
+<body>
+<nav class="nav-wrapper #6d4c41 brown darken-1">
+       
+            <a href="/" class="brand-logo">Inserra SRL</a>
+            <ul class="right hide-on-med-and-down">
+                <li> <form class="container-fluid justify-content-end">
+             
+              <a href="https://calendar.app.google/yourID"><button id="botton1"  type="button">Prenota un appuntamento</button></a>
+            </form></li>
+            </ul>
+      
+    </nav>
+    <div class="container">
+   
+        <!-- Carrello Section -->
+        <div class="card blue-grey lighten-5">
+            <div class="card-content">
+                <img src="https://i.postimg.cc/brnNvhZ6/Bianco-Semplice-Arredamento-Casa-Logo.png" alt="Logo Carrello" class="logo">
+                <table class="striped centered">
+                    <thead>
+                        <tr>
+                            <th>Nome Prodotto</th>
+                            <th>Marca</th>
+                            <th>Prezzo</th>
+                            <th>Immagine</th>
+                            <th>Pezzi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="prodotto : ${carrello}">
+                            <td th:text="${prodotto.nome}"></td>
+                            <td th:text="${prodotto.marca}"></td>
+                            <td>€<span th:text="${prodotto.prezzo}"></span></td>
+                            <td><img class="custom" th:src="${prodotto.url}" alt="Immagine Prodotto"></td>
+                            <td th:text="${prodotto.pezzi}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col s12">
+                        <h4>Scrivi la tua mail</h4>
+                        <form action="/buy" method="post">
+                            <div class="input-field">
+                                <input type="email" id="mail" name="mail" required>
+                                <label for="mail">Email</label>
+                            </div>
+                            <div class="input-field">
+                                <select id="testToken" name="token" required>
+                                    <option value="" disabled selected>Seleziona una carta</option>
+                                    <option value="tok_visa">Visa Test Card</option>
+                                    <option value="tok_mastercard">MasterCard Test Card</option>
+                                    <option value="tok_amex">American Express Test Card</option>
+                                </select>
+                                <label for="testToken">Test Token</label>
+                            </div>
+                            <button type="submit" class="btn waves-effect waves-light btn-blue">Compra</button>
+                        </form>
+                        <form action="/clear" method="post" style="margin-top: 15px;">
+                            <button type="submit" class="btn waves-effect waves-light btn-red">Svuota Carrello</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Store Section -->
+        <img src="https://i.postimg.cc/c1tJhQFQ/STORE.png" alt="Logo Store" class="logo">
+        <div class="row">
+            <div class="col s12 m4" th:each="prodotto : ${lista}">
+                <div class="card">
+                    <div class="card-image">
+                        <img class="custom" th:src="${prodotto.url}" alt="Immagine Prodotto">
+                        <span class="card-title" th:text="${prodotto.nome}"></span>
+                    </div>
+                    <div class="card-content">
+                        <form action="/add" method="post">
+                            <div class="input-field">
+                                <input id="add-${prodotto.nome}" type="number" name="selected" value="0" min="0">
+                                <label for="add-${prodotto.nome}">Quantità</label>
+                            </div>
+                            <input type="hidden" name="nome" th:value="${prodotto.nome}">
+                            <button type="submit" class="btn-small waves-effect waves-light btn-green">Aggiungi</button>
+                        </form>
+                        <form action="/del" method="post" style="margin-top: 10px;">
+                            <div class="input-field">
+                                <input id="remove-${prodotto.nome}" type="number" name="selected" value="0" min="0">
+                                <label for="remove-${prodotto.nome}">Quantità</label>
+                            </div>
+                            <input type="hidden" name="nome" th:value="${prodotto.nome}">
+                            <button type="submit" class="btn-small waves-effect waves-light btn-red">Rimuovi</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Footer -->
+   <footer class="page-footer #6d4c41 brown darken-1">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 center-align">
+                    <h5 class="white-text">Inserra SRL</h5>
+                    <p class="grey-text text-lighten-4">I migliori prodotti per la tua casa.</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container center-align">
+                © 2024 Inserra SRL
+            </div>
+        </div>
+    </footer>
+     
+</body>
+</html>
