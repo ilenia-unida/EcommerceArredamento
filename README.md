@@ -18,3 +18,11 @@ This project aims to develop a fully functional e-commerce platform for furnitur
 - **Spring Data JDBC**: For database access and manipulation
 - **Spring Web**: For building RESTful web services
 - **Spring Boot Web Tools**: For development and testing
+
+## Team
+
+- [Ilenia Unida](https://github.com/ilenia-unida)
+- [Agostino Perrino](https://github.com/Agostino-P)
+- [Marco Cerilli](https://github.com/MarcoCerilli)
+- [Javier Ernesto Ortega Alonso](https://github.com/JavierErnestoOrtegaAlonso)
+
