@@ -28,6 +28,12 @@ This project aims to develop a fully functional e-commerce platform for furnitur
 
 ## Contacts
 
-You can contact me on [LinkedIn](https://www.linkedin.com/in/ilenia-unida).
+## Contacts
+
+## Contacts
+
+You can contact me on [LinkedIn](https://www.linkedin.com/in/ilenia-unida) or via email at [this link](mailto:ileniaunida2493@gmail.com).
+
+
 
 
