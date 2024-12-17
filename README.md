@@ -26,9 +26,6 @@ This project aims to develop a fully functional e-commerce platform for furnitur
 - [Marco Cerilli](https://github.com/MarcoCerilli)
 - [Javier Ernesto Ortega Alonso](https://github.com/JavierErnestoOrtegaAlonso)
 
-## Contacts
-
-## Contacts
 
 ## Contacts
 
